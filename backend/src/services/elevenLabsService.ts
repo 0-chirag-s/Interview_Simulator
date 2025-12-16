@@ -38,7 +38,7 @@ export class ElevenLabsService {
         if (voices.length === 0) {
           throw new AppError('No voices available from Eleven Labs', 500);
         }
-        voiceId = voices[0].voice_id; 
+        voiceId = voices[0].voice_id;
         console.log(`Using default voice ID: ${voiceId}`);
       }
 
@@ -49,7 +49,7 @@ export class ElevenLabsService {
         url: `${this.baseUrl}/text-to-speech/${voiceId}`,
         data: JSON.stringify({
           text,
-          model_id: 'eleven_monolingual_v1',
+          model_id: 'eleven_turbo_v2_5', // Updated to free tier model (supports 32 languages)
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.5
@@ -65,26 +65,26 @@ export class ElevenLabsService {
 
 
       const outputDir = path.resolve('uploads/audio');
-      if (!fs.existsSync(outputDir)){
+      if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
       }
-      
+
 
       const filename = `${Date.now()}.mp3`;
       const outputPath = path.join(outputDir, filename);
-      
+
       fs.writeFileSync(outputPath, response.data);
-      
+
       console.log(`Audio file saved to: ${outputPath}`);
-      
+
       return outputPath;
     } catch (error: any) {
       console.error('Error in text to speech:', error.message);
       if (error.response) {
         console.error('Response status:', error.response.status);
-        console.error('Response data:', error.response.data ? 
-          (error.response.data instanceof Buffer ? 
-            error.response.data.toString() : JSON.stringify(error.response.data)) : 
+        console.error('Response data:', error.response.data ?
+          (error.response.data instanceof Buffer ?
+            error.response.data.toString() : JSON.stringify(error.response.data)) :
           'No response data');
       }
       throw new AppError(error.message || 'Failed to convert text to speech', 500);

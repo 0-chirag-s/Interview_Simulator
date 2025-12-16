@@ -5,6 +5,7 @@ import { config } from './config';
 import userRoutes from './routes/userRoutes';
 import interviewRoutes from './routes/interviewRoutes';
 import audioRoutes from './routes/audioRoutes';
+import interviewBotRoutes from './routes/interviewBotRoutes';
 import { handleError } from './utils/errorHandler';
 import path from 'path';
 import fs from 'fs';
@@ -31,6 +32,7 @@ mongoose.connect(config.mongoUri)
 app.use('/api/users', userRoutes);
 app.use('/api/interviews', interviewRoutes);
 app.use('/api/audio', audioRoutes);
+app.use('/api/bot', interviewBotRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Interview Simulator API' });

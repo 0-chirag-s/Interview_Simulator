@@ -1,0 +1,1 @@
+﻿src/controllers/interviewBotController.ts(60,13): error TS18046: 'newInterview._id' is of type 'unknown'.
